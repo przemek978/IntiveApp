@@ -31,7 +31,9 @@ public partial class IntiveContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Author__3214EC07FFD3A528");
 
             entity.ToTable("Author");
-
+            //entity.HasMany(e => e.BookAuthors)
+            //    .WithOne(a => a.Author)
+            //    .HasForeignKey(e=>e.AuthorId);
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.FirstName).HasMaxLength(50);
             entity.Property(e => e.LastName).HasMaxLength(50);
@@ -42,30 +44,35 @@ public partial class IntiveContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Book__3214EC07ED3B0FFF");
 
             entity.ToTable("Book");
-
+            //entity.HasMany(e => e.BookAuthors)
+            //    .WithOne(a => a.Book)
+            //    .HasForeignKey(e => e.BookId);
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Isbn)
                 .HasMaxLength(13)
                 .HasColumnName("ISBN");
             entity.Property(e => e.Rating).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.Title).HasMaxLength(100);
+
         });
+
 
         modelBuilder.Entity<BookAuthor>(entity =>
         {
-            entity.HasKey(e => e.BookId).HasName("PK__BookAuth__3DE0C2073DDCE76B");
+            //entity.HasKey(e => e.BookId).HasName("PK__BookAuth__3DE0C2073DDCE76B");
 
             entity.ToTable("BookAuthor");
 
             entity.Property(e => e.BookId).ValueGeneratedNever();
 
-            entity.HasOne(d => d.Author).WithMany(p => p.BookAuthors)
-                .HasForeignKey(d => d.AuthorId)
+            entity.HasKey(e => new { e.BookId, e.AuthorId });
+            entity.HasOne<Author>(d => d.Author).WithMany(p => p.Books)
+                .HasForeignKey(d => d.AuthorId).IsRequired()
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("author_fk");
 
-            entity.HasOne(d => d.Book).WithOne(p => p.BookAuthor)
-                .HasForeignKey<BookAuthor>(d => d.BookId)
+            entity.HasOne<Book>(d => d.Book).WithMany(p => p.Authors)
+                .HasForeignKey(d => d.BookId).IsRequired()
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("book_fk");
         });

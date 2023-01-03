@@ -1,8 +1,9 @@
 
 using IntiveApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<IntiveContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Data Source=DESKTOP-IEHQTFA;Initial Catalog=Intive;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")));
 // Add services to the container.

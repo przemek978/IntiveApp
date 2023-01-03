@@ -30,8 +30,8 @@ namespace IntiveApp.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
-            var book = await _context.Books.FindAsync(id);
 
+            var book = await _context.Books.FindAsync(id);
             if (book == null)
             {
                 return NotFound();
@@ -39,6 +39,19 @@ namespace IntiveApp.Controllers
 
             return book;
         }
+        // GET: api/Books/5
+        //[HttpGet("{title}")]
+        //public async Task<ActionResult<Book>> GetBook(string title)
+        //{
+        //    var book = await _context.Books.FindAsync(title);
+
+        //    if (book == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return book;
+        //}
 
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -76,7 +89,16 @@ namespace IntiveApp.Controllers
         [HttpPost]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
-            _context.Books.Add(book);
+            var Book = new Book
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Description = book.Description,
+                Rating = book.Rating,
+                Isbn = book.Isbn,
+                PublicationDate = book.PublicationDate
+            };
+            _context.Books.Add(Book);
             try
             {
                 await _context.SaveChangesAsync();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IntiveApp.Models;
 
@@ -14,6 +15,6 @@ public partial class Author
     public DateTime BirthDate { get; set; }
 
     public bool Gender { get; set; }
-
-    public virtual ICollection<BookAuthor> BookAuthors { get; } = new List<BookAuthor>();
+    [ForeignKey("BookId")]
+    public virtual ICollection<BookAuthor> Books { get; } = new List<BookAuthor>();
 }

@@ -11,58 +11,47 @@ namespace IntiveApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthorsController : ControllerBase
+    public class BookAuthorsController : ControllerBase
     {
         private readonly IntiveContext _context;
 
-        public AuthorsController(IntiveContext context)
+        public BookAuthorsController(IntiveContext context)
         {
             _context = context;
         }
 
-        // GET: api/Authors
+        // GET: api/BookAuthors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
+        public async Task<ActionResult<IEnumerable<BookAuthor>>> GetBookAuthors()
         {
-            return await _context.Authors.ToListAsync();
+            return await _context.BookAuthors.ToListAsync();
         }
 
-        //GET: api/Authors/5
+        // GET: api/BookAuthors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Author>> GetAuthor(int id)
+        public async Task<ActionResult<BookAuthor>> GetBookAuthor(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
+            var bookAuthor = await _context.BookAuthors.FindAsync(id);
 
-            if (author == null)
+            if (bookAuthor == null)
             {
                 return NotFound();
             }
 
-            return author;
+            return bookAuthor;
         }
-        [HttpGet("byname")]
-        public async Task<ActionResult<Author>> GetAuthor(string name)
-        {
-            var author = await _context.Authors.Where(a=>a.FirstName==name||a.LastName==name).FirstOrDefaultAsync<Author>();
 
-            if (author == null)
-            {
-                return NotFound();
-            }
-
-            return author;
-        }
-        // PUT: api/Authors/5
+        // PUT: api/BookAuthors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAuthor(int id, Author author)
+        public async Task<IActionResult> PutBookAuthor(int id, BookAuthor bookAuthor)
         {
-            if (id != author.Id)
+            if (id != bookAuthor.BookId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(author).State = EntityState.Modified;
+            _context.Entry(bookAuthor).State = EntityState.Modified;
 
             try
             {
@@ -70,7 +59,7 @@ namespace IntiveApp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AuthorExists(id))
+                if (!BookAuthorExists(id))
                 {
                     return NotFound();
                 }
@@ -83,19 +72,19 @@ namespace IntiveApp.Controllers
             return NoContent();
         }
 
-        // POST: api/Authors
+        // POST: api/BookAuthors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Author>> PostAuthor(Author author)
+        public async Task<ActionResult<BookAuthor>> PostBookAuthor(BookAuthor bookAuthor)
         {
-            _context.Authors.Add(author);
+            _context.BookAuthors.Add(bookAuthor);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (AuthorExists(author.Id))
+                if (BookAuthorExists(bookAuthor.BookId))
                 {
                     return Conflict();
                 }
@@ -105,28 +94,28 @@ namespace IntiveApp.Controllers
                 }
             }
 
-            return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
+            return CreatedAtAction("GetBookAuthor", new { id = bookAuthor.BookId }, bookAuthor);
         }
 
-        // DELETE: api/Authors/5
+        // DELETE: api/BookAuthors/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAuthor(int id)
+        public async Task<IActionResult> DeleteBookAuthor(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
-            if (author == null)
+            var bookAuthor = await _context.BookAuthors.FindAsync(id);
+            if (bookAuthor == null)
             {
                 return NotFound();
             }
 
-            _context.Authors.Remove(author);
+            _context.BookAuthors.Remove(bookAuthor);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AuthorExists(int id)
+        private bool BookAuthorExists(int id)
         {
-            return _context.Authors.Any(e => e.Id == id);
+            return _context.BookAuthors.Any(e => e.BookId == id);
         }
     }
 }
