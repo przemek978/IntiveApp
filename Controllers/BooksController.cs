@@ -17,16 +17,12 @@ namespace IntiveApp.Controllers
         
         public BooksController(IntiveContext context)
         {
-            //context.Books.Entry(context.Books.Find(1)).Collection(p => p.Authors).Load();
-            //context.SaveChanges();
             _context = context;
-            
         }
         // GET: api/Books
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
-            //var a=_context.Books.Include(a => a.Authors).ThenInclude(a => a.Author);
             return await _context.Books.ToListAsync();
         }
 
