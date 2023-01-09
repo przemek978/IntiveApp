@@ -10,11 +10,10 @@ public partial class Author
 
     public string FirstName { get; set; } = null!;
 
-    public string LastName { get; set; } = null!;
+    public string LastName { get; set; }
 
     public DateTime BirthDate { get; set; }
 
     public bool Gender { get; set; }
-    [ForeignKey("BookId")]
-    public virtual ICollection<BookAuthor> Books { get; } = new List<BookAuthor>();
+    public virtual List<BookAuthor> Books { get; set; } = new List<BookAuthor>();
 }

@@ -8,7 +8,7 @@ public partial class Book
 {
     public int Id { get; set; }
 
-    public string Title { get; set; } = null!;
+    public string Title { get; set; }
 
     public string Description { get; set; } = null!;
 
@@ -17,6 +17,6 @@ public partial class Book
     public string Isbn { get; set; } = null!;
 
     public DateTime PublicationDate { get; set; }
-    [ForeignKey("AuthorId")]
-    public virtual ICollection<BookAuthor> Authors { get; } = new List<BookAuthor>();
+
+    public virtual List<BookAuthor> Authors { get; set; } = new List<BookAuthor>();
 }

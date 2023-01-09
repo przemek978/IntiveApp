@@ -17,34 +17,25 @@ namespace IntiveApp.Controllers
         
         public BooksController(IntiveContext context)
         {
+            //context.Books.Entry(context.Books.Find(1)).Collection(p => p.Authors).Load();
+            //context.SaveChanges();
             _context = context;
+            
         }
         // GET: api/Books
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
+            //var a=_context.Books.Include(a => a.Authors).ThenInclude(a => a.Author);
             return await _context.Books.ToListAsync();
         }
 
-        // GET: api/Books/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
-        {
-
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            return book;
-        }
-        // GET: api/Books/5
-        //[HttpGet("{title}")]
-        //public async Task<ActionResult<Book>> GetBook(string title)
+        //// GET: api/Books/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Book>> GetBook(int id)
         //{
-        //    var book = await _context.Books.FindAsync(title);
 
+        //    var book = await _context.Books.FindAsync(id);
         //    if (book == null)
         //    {
         //        return NotFound();
@@ -52,6 +43,20 @@ namespace IntiveApp.Controllers
 
         //    return book;
         //}
+        //GET: api/Books/search/"title"
+        [HttpGet("{search}")]
+        public async Task<ActionResult<Book>> GetBook(string text)
+        {
+            // var book = await _context.Books.FindAsync(title);
+            var book = await _context.Books.Where(a => a.Title == text || a.Description == text || a.Isbn == text || a.Rating==Convert.ToDecimal(text)).FirstOrDefaultAsync<Book>();
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return book;
+        }
 
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
